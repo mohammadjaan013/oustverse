@@ -1,0 +1,598 @@
+/* ===========================
+   Biziverse ERP Custom Styles
+   =========================== */
+
+:root {
+    --sidebar-width: 240px;
+    --sidebar-bg: #1a1d20;
+    --sidebar-text: #a8adb5;
+    --sidebar-active: #ff8c00;
+    --primary-color: #ff8c00;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    background-color: #f5f5f5;
+}
+
+/* ===========================
+   Layout
+   =========================== */
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+/* ===========================
+   Sidebar
+   =========================== */
+
+.sidebar {
+    min-width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    transition: all 0.3s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    margin-left: calc(-1 * var(--sidebar-width));
+}
+
+.sidebar-header {
+    padding: 20px;
+    background: var(--sidebar-bg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.logo i {
+    font-size: 24px;
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.logo-text {
+    letter-spacing: 1px;
+}
+
+.sidebar-menu {
+    padding: 10px 0;
+}
+
+.nav-icons {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-icon {
+    color: var(--sidebar-text);
+    font-size: 18px;
+    transition: color 0.3s;
+    text-decoration: none;
+}
+
+.nav-icon:hover {
+    color: var(--primary-color);
+}
+
+.menu-section {
+    margin: 20px 0;
+}
+
+.menu-section-title {
+    padding: 10px 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-list li {
+    margin: 0;
+}
+
+.menu-list a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.menu-list a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    padding-left: 25px;
+}
+
+.menu-list a.active {
+    background: rgba(255, 140, 0, 0.1);
+    color: var(--primary-color);
+    border-left: 3px solid var(--primary-color);
+}
+
+.menu-list a i {
+    width: 20px;
+    margin-right: 12px;
+    font-size: 16px;
+}
+
+/* ===========================
+   Main Content
+   =========================== */
+
+#content {
+    width: 100%;
+    min-height: 100vh;
+    transition: all 0.3s;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+}
+
+#content.active {
+    margin-left: 0;
+}
+
+/* ===========================
+   Navbar
+   =========================== */
+
+.navbar {
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* ===========================
+   Page Header
+   =========================== */
+
+.page-header {
+    background: #fff;
+    padding: 20px 0;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+/* ===========================
+   Dashboard Cards / Tiles
+   =========================== */
+
+.dashboard-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    border: 1px solid #e0e0e0;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-card .card-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.dashboard-card h3 {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.dashboard-card .card-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+}
+
+.dashboard-card .card-action {
+    display: inline-flex;
+    align-items: center;
+    font-size: 24px;
+    color: #28a745;
+    margin-top: 10px;
+}
+
+.dashboard-card.pending .card-value {
+    color: var(--warning-color);
+}
+
+.dashboard-card.success .card-value {
+    color: var(--success-color);
+}
+
+.dashboard-card.primary .card-value {
+    color: var(--primary-color);
+}
+
+.module-section {
+    margin-bottom: 40px;
+}
+
+.module-section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ===========================
+   Buttons
+   =========================== */
+
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #e67e00;
+    border-color: #e67e00;
+}
+
+/* ===========================
+   Tables
+   =========================== */
+
+.table {
+    background: #fff;
+}
+
+.table thead th {
+    background: #f8f9fa;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* DataTables customization */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 15px;
+}
+
+/* Fix DataTables entries dropdown overlap */
+.dataTables_wrapper .dataTables_length select {
+    padding-right: 30px !important;
+    padding-left: 8px;
+    min-width: 60px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* ===========================
+   Cards
+   =========================== */
+
+.card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    font-weight: 600;
+}
+
+/* ===========================
+   Badges
+   =========================== */
+
+.badge {
+    font-weight: 500;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+/* ===========================
+   Forms
+   =========================== */
+
+.form-label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.form-control,
+.form-select {
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    padding: 8px 12px;
+}
+
+/* Fix dropdown arrow overlap */
+.form-select,
+select.form-control {
+    padding-right: 38px !important;
+    background-position: right 12px center;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(255, 140, 0, 0.25);
+}
+
+/* ===========================
+   Modals
+   =========================== */
+
+.modal-header {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* ===========================
+   Suppliers Page Styles
+   =========================== */
+
+.nav-tabs .nav-link {
+    color: #495057;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 0.5rem 1rem;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    background-color: #f8f9fa;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    background-color: transparent;
+    border-color: transparent transparent var(--primary-color);
+    font-weight: 600;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Connection type icons */
+.nav-tabs .fa-circle {
+    font-size: 0.6rem;
+    margin-right: 0.25rem;
+}
+
+/* Table styling for suppliers */
+#suppliersTable tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+#suppliersTable .fa-circle {
+    font-size: 0.8rem;
+}
+
+/* Action buttons in table */
+#suppliersTable .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Gap utility for older Bootstrap versions */
+.gap-2 {
+    gap: 0.5rem !important;
+}
+
+.gap-3 {
+    gap: 1rem !important;
+}
+
+.d-flex.gap-2 > *, .d-flex.gap-3 > * {
+    margin-right: 0 !important;
+}
+
+/* ===========================
+   Footer
+   =========================== */
+
+.footer {
+    margin-top: auto;
+    background: #fff;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+
+@media (max-width: 768px) {
+    .sidebar {
+        margin-left: calc(-1 * var(--sidebar-width));
+    }
+    
+    .sidebar.active {
+        margin-left: 0;
+    }
+    
+    #content {
+        margin-left: 0;
+    }
+    
+    #content.active {
+        margin-left: var(--sidebar-width);
+    }
+}
+
+/* ===========================
+   Utilities
+   =========================== */
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+/* ===========================
+   Dashboard Right Panel
+   =========================== */
+
+.dashboard-right-panel {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.setup-progress {
+    margin-bottom: 20px;
+}
+
+.progress-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(var(--primary-color) calc(var(--progress) * 1%), #e0e0e0 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.newsfeed-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.newsfeed-item:last-child {
+    border-bottom: none;
+}
+
+.newsfeed-company {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.newsfeed-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin: 5px 0;
+}
+
+.newsfeed-description {
+    font-size: 12px;
+    color: #666;
+}
+
+.newsfeed-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Scrollbar styling */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}

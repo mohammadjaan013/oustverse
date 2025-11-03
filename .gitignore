@@ -1,0 +1,30 @@
+# Environment and configuration files
+includes/config.php
+.env
+
+# Uploaded files
+uploads/*
+!uploads/.htaccess
+
+# Logs
+*.log
+error_log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/*
+!tmp/.htaccess
+
+# Cache
+cache/*
+!cache/.htaccess
