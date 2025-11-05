@@ -25,6 +25,21 @@ function initializeSuppliersTable() {
                 d.executive = $('#filterExecutive').val();
                 d.city = $('#filterCity').val();
                 d.state = $('#filterState').val();
+            },
+            dataSrc: function(json) {
+                // Handle nested response structure
+                if (json.success && json.data) {
+                    // Copy pagination data to root level for DataTables
+                    json.recordsTotal = json.data.recordsTotal;
+                    json.recordsFiltered = json.data.recordsFiltered;
+                    json.draw = json.data.draw;
+                    return json.data.data;
+                }
+                return [];
+            },
+            error: function(xhr, error, code) {
+                console.error('DataTable Ajax Error:', error, code);
+                console.error('Response:', xhr.responseText);
             }
         },
         columns: [

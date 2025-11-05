@@ -116,8 +116,15 @@ class PurchaseOrder {
      */
     public function getItems($poId) {
         try {
-            $sql = "SELECT poi.*, p.name as product_name, p.sku, p.unit,
-                    poi.qty as quantity, poi.rate as unit_price, poi.item_id as product_id
+            $sql = "SELECT poi.*, p.name as product_name, p.sku, p.unit as item_unit,
+                    poi.qty as quantity, 
+                    poi.rate as unit_price, 
+                    poi.item_id as product_id,
+                    poi.total as total_amount,
+                    poi.description,
+                    COALESCE(poi.tax_amount, 0) as tax_amount,
+                    0 as discount_amount,
+                    COALESCE(p.unit, 'PCS') as unit
                     FROM purchase_order_items poi
                     LEFT JOIN items p ON poi.item_id = p.id
                     WHERE poi.purchase_order_id = ?
@@ -260,16 +267,17 @@ class PurchaseOrder {
     private function addItems($poId, $items) {
         try {
             $sql = "INSERT INTO purchase_order_items (
-                        purchase_order_id, item_id, qty, rate,
+                        purchase_order_id, item_id, description, qty, rate,
                         tax_percent, tax_amount, total, notes
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             $stmt = $this->db->prepare($sql);
             
             foreach ($items as $item) {
                 $stmt->execute([
                     $poId,
-                    $item['product_id'],
+                    $item['product_id'] ?: null,  // Use null if empty
+                    $item['description'] ?? null,
                     $item['quantity'],
                     $item['unit_price'],
                     $item['tax_rate'] ?? 0,

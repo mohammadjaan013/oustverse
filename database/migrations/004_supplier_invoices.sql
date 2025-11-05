@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `supplier_invoices` (
 CREATE TABLE IF NOT EXISTS `supplier_invoice_items` (
     `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `invoice_id` INT(10) UNSIGNED NOT NULL,
-    `item_id` INT(10) UNSIGNED NOT NULL,
+    `item_id` INT(10) UNSIGNED NULL,
     `description` TEXT NULL,
     `hsn_sac` VARCHAR(20) NULL,
     `qty` DECIMAL(10,2) NOT NULL,
@@ -52,6 +52,12 @@ CREATE TABLE IF NOT EXISTS `supplier_invoice_items` (
     `rate` DECIMAL(15,2) NOT NULL,
     `discount_amount` DECIMAL(15,2) DEFAULT 0.00,
     `taxable_amount` DECIMAL(15,2) NOT NULL,
+    `cgst_percent` DECIMAL(5,2) DEFAULT 0.00,
+    `cgst_amount` DECIMAL(15,2) DEFAULT 0.00,
+    `sgst_percent` DECIMAL(5,2) DEFAULT 0.00,
+    `sgst_amount` DECIMAL(15,2) DEFAULT 0.00,
+    `igst_percent` DECIMAL(5,2) DEFAULT 0.00,
+    `igst_amount` DECIMAL(15,2) DEFAULT 0.00,
     `cgst` DECIMAL(15,2) DEFAULT 0.00,
     `sgst` DECIMAL(15,2) DEFAULT 0.00,
     `igst` DECIMAL(15,2) DEFAULT 0.00,
@@ -62,8 +68,7 @@ CREATE TABLE IF NOT EXISTS `supplier_invoice_items` (
     PRIMARY KEY (`id`),
     KEY `idx_invoice_id` (`invoice_id`),
     KEY `idx_item_id` (`item_id`),
-    FOREIGN KEY (`invoice_id`) REFERENCES `supplier_invoices`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`item_id`) REFERENCES `items`(`id`) ON DELETE RESTRICT
+    FOREIGN KEY (`invoice_id`) REFERENCES `supplier_invoices`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Supplier invoice payments

@@ -273,21 +273,21 @@ require_once 'includes/header.php';
                                     <td><input type="text" class="form-control form-control-sm" name="items[<?php echo $index; ?>][hsn]" 
                                                value="<?php echo htmlspecialchars($item['sku'] ?? ''); ?>" readonly></td>
                                     <td><input type="number" class="form-control form-control-sm" name="items[<?php echo $index; ?>][quantity]" 
-                                               value="<?php echo $item['quantity']; ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
+                                               value="<?php echo htmlspecialchars($item['quantity'] ?? 1); ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
                                     <td><input type="text" class="form-control form-control-sm" name="items[<?php echo $index; ?>][unit]" 
                                                value="<?php echo htmlspecialchars($item['unit'] ?? 'PCS'); ?>" readonly></td>
                                     <td><input type="number" class="form-control form-control-sm" name="items[<?php echo $index; ?>][unit_price]" 
-                                               value="<?php echo $item['unit_price']; ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
+                                               value="<?php echo htmlspecialchars($item['unit_price'] ?? 0); ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
                                     <td><input type="number" class="form-control form-control-sm" name="items[<?php echo $index; ?>][discount_amount]" 
-                                               value="<?php echo $item['discount_amount']; ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
+                                               value="<?php echo htmlspecialchars($item['discount_amount'] ?? 0); ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
                                     <td><input type="number" class="form-control form-control-sm" name="items[<?php echo $index; ?>][taxable]" 
-                                               value="<?php echo $item['unit_price'] * $item['quantity'] - $item['discount_amount']; ?>" step="0.01" readonly></td>
+                                               value="<?php echo htmlspecialchars(($item['unit_price'] ?? 0) * ($item['quantity'] ?? 1) - ($item['discount_amount'] ?? 0)); ?>" step="0.01" readonly></td>
                                     <td><input type="number" class="form-control form-control-sm" name="items[<?php echo $index; ?>][cgst]" 
-                                               value="<?php echo $item['tax_amount'] / 2; ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
+                                               value="<?php echo htmlspecialchars(($item['tax_amount'] ?? 0) / 2); ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
                                     <td><input type="number" class="form-control form-control-sm" name="items[<?php echo $index; ?>][sgst]" 
-                                               value="<?php echo $item['tax_amount'] / 2; ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
+                                               value="<?php echo htmlspecialchars(($item['tax_amount'] ?? 0) / 2); ?>" step="0.01" onchange="calculateRow(<?php echo $index; ?>)"></td>
                                     <td><input type="number" class="form-control form-control-sm" name="items[<?php echo $index; ?>][total_amount]" 
-                                               value="<?php echo $item['total_amount']; ?>" step="0.01" readonly></td>
+                                               value="<?php echo htmlspecialchars($item['total_amount'] ?? 0); ?>" step="0.01" readonly></td>
                                     <td><button type="button" class="btn btn-sm btn-danger" onclick="removeItem(this)"><i class="fas fa-times"></i></button></td>
                                 </tr>
                                 <?php endforeach;

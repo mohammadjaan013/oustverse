@@ -430,22 +430,31 @@ $(document).ready(function() {
                         addItemRow();
                         let row = itemCounter;
                         
-                        // Populate item
-                        let itemOption = new Option(item.item_name, item.item_id, true, true);
+                        // Populate item dropdown
+                        // For free-text items (item_id is null/0), show description in dropdown
+                        // For inventory items, show item name
+                        let displayText = item.item_name || item.description || 'Custom Item';
+                        let itemId = item.item_id || '';
+                        let itemOption = new Option(displayText, itemId, true, true);
                         $(`select[name="items[${row}][item_id]"]`).append(itemOption).trigger('change');
                         
-                        $(`input[name="items[${row}][description]"]`).val(item.description);
+                        // Populate all fields - use textarea for description if it exists, otherwise input
+                        let descField = $(`textarea[name="items[${row}][description]"], input[name="items[${row}][description]"]`);
+                        descField.val(item.description);
+                        
                         $(`input[name="items[${row}][hsn_sac]"]`).val(item.hsn_sac);
                         $(`input[name="items[${row}][qty]"]`).val(item.qty);
                         $(`input[name="items[${row}][unit]"]`).val(item.unit);
                         $(`input[name="items[${row}][rate]"]`).val(item.rate);
-                        $(`input[name="items[${row}][discount_amount]"]`).val(item.discount_amount);
-                        $(`input[name="items[${row}][taxable_amount]"]`).val(item.taxable_amount);
-                        $(`input[name="items[${row}][cgst_percent]"]`).val(item.cgst_percent);
-                        $(`input[name="items[${row}][cgst_amount]"]`).val(item.cgst_amount);
-                        $(`input[name="items[${row}][sgst_percent]"]`).val(item.sgst_percent);
-                        $(`input[name="items[${row}][sgst_amount]"]`).val(item.sgst_amount);
-                        $(`input[name="items[${row}][total_amount]"]`).val(item.total_amount);
+                        $(`input[name="items[${row}][discount_amount]"]`).val(item.discount_amount || 0);
+                        
+                        // Populate tax percentages
+                        $(`input[name="items[${row}][cgst_percent]"]`).val(item.cgst_percent || 0);
+                        $(`input[name="items[${row}][sgst_percent]"]`).val(item.sgst_percent || 0);
+                        $(`input[name="items[${row}][igst_percent]"]`).val(item.igst_percent || 0);
+                        
+                        // Recalculate tax amounts and totals based on qty, rate, discount, and tax percentages
+                        calculateRowTotal(row);
                     });
                     
                     calculateTotal();

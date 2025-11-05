@@ -58,51 +58,59 @@
                     <div class="menu-section-title">Sales</div>
                     <ul class="menu-list">
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/crm.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'crm.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=CRM" class="<?php echo basename($_SERVER['PHP_SELF']) == 'crm.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-user-tie"></i>
                                 <span>CRM</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/quotes.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'quotes.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Quotes" class="<?php echo basename($_SERVER['PHP_SELF']) == 'quotes.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-file-invoice"></i>
                                 <span>Quotes</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/orders.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'orders.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Orders" class="<?php echo basename($_SERVER['PHP_SELF']) == 'orders.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-shopping-cart"></i>
                                 <span>Orders</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/invoices.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'invoices.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Invoices" class="<?php echo basename($_SERVER['PHP_SELF']) == 'invoices.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-file-invoice-dollar"></i>
                                 <span>Invoices</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/recovery.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'recovery.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Recovery" class="<?php echo basename($_SERVER['PHP_SELF']) == 'recovery.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-undo-alt"></i>
                                 <span>Recovery</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/contracts.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'contracts.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Contracts" class="<?php echo basename($_SERVER['PHP_SELF']) == 'contracts.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-file-contract"></i>
                                 <span>Contracts</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/support.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'support.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Support" class="<?php echo basename($_SERVER['PHP_SELF']) == 'support.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-headset"></i>
                                 <span>Support</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/customers.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'customers.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Customers" class="<?php echo basename($_SERVER['PHP_SELF']) == 'customers.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-users"></i>
                                 <span>Customers</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                     </ul>
@@ -113,45 +121,52 @@
                     <div class="menu-section-title">ERP</div>
                     <ul class="menu-list">
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/accounts.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'accounts.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Accounts" class="<?php echo basename($_SERVER['PHP_SELF']) == 'accounts.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-calculator"></i>
                                 <span>Accounts</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
                             <a href="<?php echo BASE_URL; ?>/purchases.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'purchases.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-file-invoice"></i>
                                 <span>Purchases</span>
+                                <span class="badge bg-success text-white ms-2" style="font-size: 0.6rem;">Live</span>
                             </a>
                         </li>
                         <li>
                             <a href="<?php echo BASE_URL; ?>/purchase_orders.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'purchase_orders.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-file-alt"></i>
                                 <span>Purch Orders</span>
+                                <span class="badge bg-success text-white ms-2" style="font-size: 0.6rem;">Live</span>
                             </a>
                         </li>
                         <li>
                             <a href="<?php echo BASE_URL; ?>/inventory.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'inventory.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-boxes"></i>
                                 <span>Inventory</span>
+                                <span class="badge bg-success text-white ms-2" style="font-size: 0.6rem;">Live</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/manufacturing.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'manufacturing.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/production_jobs.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'production_jobs.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-industry"></i>
                                 <span>Manufacturing</span>
+                                <span class="badge bg-success text-white ms-2" style="font-size: 0.6rem;">Live</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/tasks.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'tasks.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Tasks" class="<?php echo basename($_SERVER['PHP_SELF']) == 'tasks.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-tasks"></i>
                                 <span>Tasks</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
                             <a href="<?php echo BASE_URL; ?>/suppliers.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'suppliers.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-truck"></i>
                                 <span>Suppliers</span>
+                                <span class="badge bg-success text-white ms-2" style="font-size: 0.6rem;">Live</span>
                             </a>
                         </li>
                     </ul>
@@ -162,27 +177,31 @@
                     <div class="menu-section-title">Network</div>
                     <ul class="menu-list">
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/connections.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'connections.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Connections" class="<?php echo basename($_SERVER['PHP_SELF']) == 'connections.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-network-wired"></i>
                                 <span>Connections</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/store.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'store.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Your Store" class="<?php echo basename($_SERVER['PHP_SELF']) == 'store.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-store"></i>
                                 <span>Your Store</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/search.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'search.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Search" class="<?php echo basename($_SERVER['PHP_SELF']) == 'search.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-search"></i>
                                 <span>Search</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/reports.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'reports.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Reports" class="<?php echo basename($_SERVER['PHP_SELF']) == 'reports.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-chart-bar"></i>
                                 <span>Reports</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6rem;">Soon</span>
                             </a>
                         </li>
                     </ul>

@@ -239,6 +239,13 @@ require_once 'includes/header.php';
                     <div id="quickEntrySection">
                         <div class="row g-3">
                             
+                            <!-- Supplier Code -->
+                            <div class="col-md-6">
+                                <label class="form-label">Code <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="code" id="supplierCode" required placeholder="e.g., SUP-001">
+                                <small class="text-muted">Unique identifier for this supplier</small>
+                            </div>
+                            
                             <!-- Business Name -->
                             <div class="col-12">
                                 <label class="form-label">Business <span class="text-danger">*</span></label>

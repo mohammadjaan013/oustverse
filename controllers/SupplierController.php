@@ -122,7 +122,12 @@ class SupplierController {
      */
     public function create() {
         requireLogin();
-        verifyCSRFToken();
+        
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+            echo json_encode(['success' => false, 'message' => 'Invalid security token']);
+            return;
+        }
         
         // Validate required fields
         $errors = [];
@@ -203,7 +208,12 @@ class SupplierController {
      */
     public function update() {
         requireLogin();
-        verifyCSRFToken();
+        
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+            jsonResponse(false, 'Invalid security token');
+            return;
+        }
         
         $id = intval($_POST['id'] ?? 0);
         if (!$id) {
@@ -281,7 +291,12 @@ class SupplierController {
      */
     public function delete() {
         requireLogin();
-        verifyCSRFToken();
+        
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+            jsonResponse(false, 'Invalid security token');
+            return;
+        }
         
         $id = intval($_POST['id'] ?? 0);
         if (!$id) {
@@ -346,7 +361,12 @@ class SupplierController {
      */
     public function addContact() {
         requireLogin();
-        verifyCSRFToken();
+        
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+            jsonResponse(false, 'Invalid security token');
+            return;
+        }
         
         $supplierId = intval($_POST['supplier_id'] ?? 0);
         if (!$supplierId) {
@@ -386,7 +406,12 @@ class SupplierController {
      */
     public function updateContact() {
         requireLogin();
-        verifyCSRFToken();
+        
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+            jsonResponse(false, 'Invalid security token');
+            return;
+        }
         
         $id = intval($_POST['id'] ?? 0);
         $supplierId = intval($_POST['supplier_id'] ?? 0);
@@ -428,7 +453,12 @@ class SupplierController {
      */
     public function deleteContact() {
         requireLogin();
-        verifyCSRFToken();
+        
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+            jsonResponse(false, 'Invalid security token');
+            return;
+        }
         
         $id = intval($_POST['id'] ?? 0);
         if (!$id) {
@@ -519,7 +549,12 @@ class SupplierController {
      */
     public function importCSV() {
         requireLogin();
-        verifyCSRFToken();
+        
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+            jsonResponse(false, 'Invalid security token');
+            return;
+        }
         
         if (!isset($_FILES['csv_file'])) {
             jsonResponse(false, 'No file uploaded');

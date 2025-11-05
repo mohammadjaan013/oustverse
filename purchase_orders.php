@@ -94,8 +94,8 @@ require_once 'includes/header.php';
                     <div class="col-md-3">
                         <label class="form-label">Status</label>
                         <select id="filterStatus" class="form-select">
-                            <option value="">All Statuses</option>
-                            <option value="pending" selected>Pending</option>
+                            <option value="" selected>All Statuses</option>
+                            <option value="pending">Pending</option>
                             <option value="draft">Draft</option>
                             <option value="approved">Approved</option>
                             <option value="received">Received</option>

@@ -23,6 +23,13 @@ function initializePurchaseOrdersTable() {
                 d.status = $('#filterStatus').val();
                 d.month = $('#filterMonth').val();
                 d.created_by = $('#filterExecutive').val();
+            },
+            dataSrc: function(json) {
+                // Extract the data array from the nested response
+                if (json.success && json.data && json.data.data) {
+                    return json.data.data;
+                }
+                return [];
             }
         },
         columns: [

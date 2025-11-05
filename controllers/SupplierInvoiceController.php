@@ -360,11 +360,11 @@ class SupplierInvoiceController {
             $result[] = [
                 'id' => $product['id'],
                 'text' => $product['name'],
-                'sku' => $product['sku'],
-                'hsn_code' => $product['hsn_code'],
-                'unit' => $product['unit'],
-                'price' => $product['price'],
-                'tax_rate' => $product['tax_rate']
+                'sku' => $product['sku'] ?? '',
+                'hsn_code' => $product['hsn_code'] ?? '',
+                'unit' => $product['unit'] ?? 'PCS',
+                'price' => $product['retail_price'] ?? $product['standard_cost'] ?? 0,
+                'tax_rate' => $product['tax_rate'] ?? 0
             ];
         }
         

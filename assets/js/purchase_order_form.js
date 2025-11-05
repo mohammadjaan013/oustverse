@@ -226,7 +226,8 @@ function savePurchaseOrder(saveAndNew = false) {
     
     // Prepare form data
     const formData = $('#poForm').serialize();
-    const action = $('#poId').val() ? 'update' : 'create';
+    const poId = $('#poId').val();
+    const action = (poId && poId !== '0') ? 'update' : 'create';
     
     // Calculate totals
     let taxableAmount = 0;

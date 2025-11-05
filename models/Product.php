@@ -20,7 +20,7 @@ class Product {
                     FROM items p
                     LEFT JOIN categories c ON p.category_id = c.id
                     LEFT JOIN locations l ON p.location_id = l.id
-                    WHERE p.active = 1";
+                    WHERE p.is_active = 1";
             
             $params = [];
             
@@ -65,7 +65,7 @@ class Product {
                     FROM items p
                     LEFT JOIN categories c ON p.category_id = c.id
                     LEFT JOIN locations l ON p.location_id = l.id
-                    WHERE p.id = ? AND p.active = 1";
+                    WHERE p.id = ? AND p.is_active = 1";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$id]);
@@ -82,7 +82,7 @@ class Product {
      */
     public function getBySku($sku) {
         try {
-            $sql = "SELECT * FROM items WHERE sku = ? AND active = 1";
+            $sql = "SELECT * FROM items WHERE sku = ? AND is_active = 1";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$sku]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -140,7 +140,7 @@ class Product {
                         hsn_code = ?, purchase_price = ?, selling_price = ?, mrp = ?,
                         min_stock_level = ?, max_stock_level = ?, reorder_level = ?,
                         location_id = ?, updated_at = NOW()
-                    WHERE id = ? AND active = 1";
+                    WHERE id = ? AND is_active = 1";
             
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([
@@ -170,7 +170,7 @@ class Product {
      */
     public function delete($id) {
         try {
-            $sql = "UPDATE items SET active = 0, updated_at = NOW() WHERE id = ?";
+            $sql = "UPDATE items SET is_active = 0, updated_at = NOW() WHERE id = ?";
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([$id]);
         } catch (PDOException $e) {
@@ -242,7 +242,7 @@ class Product {
                     COALESCE(SUM(sm.quantity), 0) as current_stock
                     FROM items p
                     LEFT JOIN stock_movements sm ON p.id = sm.item_id
-                    WHERE p.active = 1
+                    WHERE p.is_active = 1
                     GROUP BY p.id
                     HAVING current_stock <= p.reorder_level AND p.reorder_level > 0
                     ORDER BY current_stock ASC";
@@ -269,7 +269,7 @@ class Product {
             ];
             
             // Total products
-            $sql = "SELECT COUNT(*) as count FROM items WHERE active = 1";
+            $sql = "SELECT COUNT(*) as count FROM items WHERE is_active = 1";
             $result = $this->db->query($sql)->fetch(PDO::FETCH_ASSOC);
             $stats['total_products'] = intval($result['count']);
             
@@ -285,7 +285,7 @@ class Product {
             $sql = "SELECT SUM(sm.quantity * p.purchase_price) as total_value
                     FROM stock_movements sm
                     JOIN items p ON sm.item_id = p.id
-                    WHERE p.active = 1";
+                    WHERE p.is_active = 1";
             $result = $this->db->query($sql)->fetch(PDO::FETCH_ASSOC);
             $stats['total_value'] = floatval($result['total_value'] ?? 0);
             
