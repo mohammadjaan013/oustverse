@@ -82,52 +82,52 @@ require_once 'includes/header.php';
         <!-- Statistics Cards -->
         <div class="row mb-4">
             <div class="col-md-3">
-                <div class="stats-card">
+                <div class="stats-card stats-card-info">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="stats-label">WIP</p>
                             <h3 class="stats-value" id="wipCount"><?php echo $stats['wip_jobs'] ?? 0; ?></h3>
                         </div>
-                        <div class="stats-icon bg-info">
+                        <div class="stats-icon">
                             <i class="fas fa-cog"></i>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stats-card">
+                <div class="stats-card stats-card-danger">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="stats-label">Overdue</p>
                             <h3 class="stats-value text-danger" id="overdueCount"><?php echo $stats['overdue_jobs'] ?? 0; ?></h3>
                         </div>
-                        <div class="stats-icon bg-danger">
+                        <div class="stats-icon">
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stats-card">
+                <div class="stats-card stats-card-primary">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="stats-label">Total Jobs</p>
                             <h3 class="stats-value" id="totalCount"><?php echo $stats['total_jobs'] ?? 0; ?></h3>
                         </div>
-                        <div class="stats-icon bg-primary">
+                        <div class="stats-icon">
                             <i class="fas fa-tasks"></i>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stats-card">
+                <div class="stats-card stats-card-success">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="stats-label">Completed</p>
                             <h3 class="stats-value text-success" id="completedCount"><?php echo $stats['completed_jobs'] ?? 0; ?></h3>
                         </div>
-                        <div class="stats-icon bg-success">
+                        <div class="stats-icon">
                             <i class="fas fa-check-circle"></i>
                         </div>
                     </div>
@@ -254,9 +254,6 @@ require_once 'includes/header.php';
                             <label for="productId" class="form-label">
                                 Product <span class="text-danger">*</span>
                             </label>
-                            <button type="button" class="btn btn-sm btn-warning float-end" id="selectProductsBtn">
-                                <i class="fas fa-plus"></i> Select Products
-                            </button>
                             <select class="form-control" id="productId" name="product_id" required>
                                 <option value="">Select Product</option>
                             </select>
