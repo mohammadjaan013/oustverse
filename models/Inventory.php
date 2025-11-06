@@ -15,15 +15,22 @@ class Inventory {
      * Get all items with filters and pagination
      */
     public function getItems($filters = []) {
+        $params = [];
+        
+        // Build the JOIN condition for location filter
+        $locationJoin = "LEFT JOIN stock_valuations sv ON i.id = sv.item_id";
+        if (!empty($filters['location_id'])) {
+            $locationJoin .= " AND sv.location_id = :location_id";
+            $params['location_id'] = $filters['location_id'];
+        }
+        
         $sql = "SELECT i.*, c.name as category_name, 
                 COALESCE(SUM(sv.qty_on_hand), 0) as total_qty,
                 COALESCE(SUM(sv.total_value), 0) as total_value
                 FROM items i
                 LEFT JOIN categories c ON i.category_id = c.id
-                LEFT JOIN stock_valuations sv ON i.id = sv.item_id
+                $locationJoin
                 WHERE 1=1";
-        
-        $params = [];
         
         // Apply filters
         if (!empty($filters['type'])) {
@@ -39,11 +46,6 @@ class Inventory {
         if (!empty($filters['search'])) {
             $sql .= " AND (i.name LIKE :search OR i.sku LIKE :search)";
             $params['search'] = '%' . $filters['search'] . '%';
-        }
-        
-        if (!empty($filters['location_id'])) {
-            $sql .= " AND sv.location_id = :location_id";
-            $params['location_id'] = $filters['location_id'];
         }
         
         if (isset($filters['is_active'])) {

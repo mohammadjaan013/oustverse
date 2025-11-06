@@ -31,7 +31,12 @@ class ProductionJob {
 
         // Apply filters
         if (isset($filters['status']) && !empty($filters['status'])) {
-            $query .= " AND pj.status = :status";
+            // For 'active' status, show both pending and in_progress
+            if ($filters['status'] === 'active') {
+                $query .= " AND pj.status IN ('pending', 'in_progress')";
+            } else {
+                $query .= " AND pj.status = :status";
+            }
         }
 
         if (isset($filters['search']) && !empty($filters['search'])) {
@@ -50,7 +55,10 @@ class ProductionJob {
 
         // Bind parameters
         if (isset($filters['status']) && !empty($filters['status'])) {
-            $stmt->bindParam(':status', $filters['status']);
+            // Only bind parameter if not using 'active' (which uses IN clause)
+            if ($filters['status'] !== 'active') {
+                $stmt->bindParam(':status', $filters['status']);
+            }
         }
 
         if (isset($filters['search']) && !empty($filters['search'])) {
@@ -167,13 +175,56 @@ class ProductionJob {
 
     /**
      * Update production job status
+     * When status changes to 'completed', add manufactured quantity to inventory
      */
     public function updateStatus($id, $status) {
-        $query = "UPDATE {$this->table} SET status = :status WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':status', $status);
-        return $stmt->execute();
+        try {
+            // Update job status first
+            $query = "UPDATE {$this->table} SET status = :status WHERE id = :id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':status', $status);
+            $stmt->execute();
+            
+            // If job is being completed, add manufactured quantity to inventory
+            if ($status === 'completed') {
+                // Get job details
+                $job = $this->getById($id);
+                
+                if ($job) {
+                    // Get default location (Main Warehouse)
+                    $defaultLocationId = 1; // Main Warehouse
+                    
+                    // Add manufactured products to inventory
+                    require_once __DIR__ . '/Inventory.php';
+                    $inventory = new Inventory();
+                    
+                    // Get current item cost for valuation
+                    $item = $inventory->getItemById($job['product_id']);
+                    $rate = $item['standard_cost'] ?? 0;
+                    
+                    // Record stock movement for manufactured goods
+                    // The Inventory class handles its own transaction
+                    $inventory->addStockMovement([
+                        'item_id' => $job['product_id'],
+                        'location_from' => null,
+                        'location_to' => $defaultLocationId,
+                        'qty' => $job['quantity'],
+                        'rate' => $rate,
+                        'type' => 'in',
+                        'ref_type' => 'production_job',
+                        'ref_id' => $id,
+                        'notes' => 'Production completed - WIP: ' . $job['wip_no']
+                    ]);
+                }
+            }
+            
+            return true;
+            
+        } catch (Exception $e) {
+            error_log("Error updating production job status: " . $e->getMessage());
+            return false;
+        }
     }
 
     /**

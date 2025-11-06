@@ -393,7 +393,4 @@
         };
     }
 
-    // Make CSRF token name available
-    window.CSRF_TOKEN_NAME = '<?php echo CSRF_TOKEN_NAME; ?>';
-
 })(jQuery);

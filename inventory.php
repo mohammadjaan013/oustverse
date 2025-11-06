@@ -558,6 +558,10 @@ include __DIR__ . '/includes/header.php';
 
 <?php
 $customJS = "
+<script>
+    // Define CSRF token name for JavaScript
+    window.CSRF_TOKEN_NAME = '" . CSRF_TOKEN_NAME . "';
+</script>
 <script src='" . BASE_URL . "/assets/js/inventory.js'></script>
 ";
 include __DIR__ . '/includes/footer.php';

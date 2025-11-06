@@ -68,7 +68,7 @@ require_once 'includes/header.php';
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" 
                         type="button" role="tab">
-                    <i class="fas fa-clock"></i> Pending
+                    <i class="fas fa-tasks"></i> Active Jobs
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -328,9 +328,6 @@ require_once 'includes/header.php';
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- Production Jobs JavaScript -->
-<script src="assets/js/production_jobs.js?v=<?= time() ?>"></script>
 
 <?php require_once 'includes/footer.php'; ?>
 

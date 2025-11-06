@@ -9,7 +9,8 @@ $(document).ready(function() {
     let historyTable = null;
     
     // Initialize only the pending table (active tab)
-    pendingTable = initializeDataTable('#pendingJobsTable', 'pending');
+    // 'active' status shows both 'pending' and 'in_progress' jobs
+    pendingTable = initializeDataTable('#pendingJobsTable', 'active');
 
     // Initialize Select2 for dropdowns
     initializeSelect2();
@@ -18,10 +19,13 @@ $(document).ready(function() {
     loadStatistics();
     
     // Initialize history table when its tab is clicked
-    $('a[href="#history"]').one('shown.bs.tab', function() {
-        if (historyTable === null) {
-            historyTable = initializeDataTable('#historyJobsTable', 'completed');
-        }
+    $('button[data-bs-target="#history"]').one('shown.bs.tab', function() {
+        // Add a small delay to ensure the tab is fully visible
+        setTimeout(function() {
+            if (historyTable === null) {
+                historyTable = initializeDataTable('#historyJobsTable', 'completed');
+            }
+        }, 100);
     });
 
     // Set default target date (7 days from now)
@@ -62,7 +66,7 @@ $(document).ready(function() {
                 },
                 { data: 'customer_name' },
                 { data: 'quantity' },
-                { 
+                                { 
                     data: 'target_date',
                     render: function(data, type, row) {
                         if (row.is_overdue) {
@@ -71,22 +75,21 @@ $(document).ready(function() {
                         return data;
                     }
                 },
-                { 
+                // Days remaining column - only for pending/active jobs table
+                ...(selector === '#pendingJobsTable' ? [{
                     data: 'days_remaining',
                     render: function(data, type, row) {
-                        if (selector === '#pendingJobsTable') {
-                            if (data < 0) {
-                                return '<span class="badge bg-danger">' + Math.abs(data) + ' days overdue</span>';
-                            } else if (data <= 3) {
-                                return '<span class="badge bg-warning">' + data + ' days</span>';
-                            } else {
-                                return '<span class="badge bg-success">' + data + ' days</span>';
-                            }
+                        if (data < 0) {
+                            return '<span class="badge bg-danger">' + Math.abs(data) + ' days overdue</span>';
+                        } else if (data <= 3) {
+                            return '<span class="badge bg-warning">' + data + ' days</span>';
+                        } else {
+                            return '<span class="badge bg-success">' + data + ' days</span>';
                         }
-                        return '-';
                     }
-                },
+                }] : []),
                 { data: 'status' },
+                // Created date column - only for history table
                 ...(selector === '#historyJobsTable' ? [{ data: 'created_at' }] : []),
                 { 
                     data: 'actions',
@@ -97,7 +100,7 @@ $(document).ready(function() {
             order: [[0, 'desc']],
             pageLength: 25,
             language: {
-                emptyTable: status === 'pending' ? 'No pending production jobs' : 'No production job history'
+                emptyTable: status === 'active' ? 'No active production jobs' : 'No production job history'
             }
         });
     }
