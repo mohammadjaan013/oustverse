@@ -519,14 +519,14 @@ include __DIR__ . '/includes/header.php';
 <div class="modal fade" id="selectItemsModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-warning">
                 <h5 class="modal-title">Select Items</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label class="form-label">Select Store:</label>
-                    <select class="form-select" id="selectStoreDropdown">
+                    <label class="form-label">Select Store: <span class="text-danger">*</span></label>
+                    <select class="form-select" id="selectStoreDropdown" required>
                         <option value="">Select</option>
                         <?php foreach ($data['locations'] as $loc): ?>
                             <option value="<?php echo $loc['id']; ?>"><?php echo htmlspecialchars($loc['name']); ?></option>
@@ -535,7 +535,37 @@ include __DIR__ . '/includes/header.php';
                 </div>
                 
                 <div class="mb-3">
-                    <input type="text" class="form-control" id="selectItemSearch" placeholder="Search">
+                    <label class="form-label">Assign To:</label>
+                    <select class="form-select select2" id="assignedToPerson">
+                        <option value="">-- Not Assigned --</option>
+                        <?php
+                        // Fetch all active users for assignment
+                        try {
+                            $usersQuery = "SELECT id, name, role FROM users WHERE active = 1 ORDER BY name";
+                            $usersStmt = getDB()->query($usersQuery);
+                            while ($user = $usersStmt->fetch(PDO::FETCH_ASSOC)) {
+                                $roleLabel = ucfirst($user['role']);
+                                echo '<option value="' . $user['id'] . '">' . htmlspecialchars($user['name']) . ' (' . $roleLabel . ')</option>';
+                            }
+                        } catch (Exception $e) {
+                            error_log("Error fetching users: " . $e->getMessage());
+                        }
+                        ?>
+                    </select>
+                    <small class="form-text text-muted">
+                        <i class="fas fa-info-circle"></i> Optional: Assign this task to a specific person
+                    </small>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Assignment Notes:</label>
+                    <textarea class="form-control" id="assignmentNotes" rows="2" placeholder="Add any special instructions or notes for the assigned person..."></textarea>
+                </div>
+                
+                <hr>
+                
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="selectItemSearch" placeholder="Search items...">
                 </div>
                 
                 <div id="selectItemsList" class="list-group" style="max-height: 400px; overflow-y: auto;">
@@ -545,11 +575,11 @@ include __DIR__ . '/includes/header.php';
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-dark" id="btnSelectItems">
-                    <i class="fas fa-check me-1"></i>Select
-                </button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     <i class="fas fa-times me-1"></i>Close
+                </button>
+                <button type="button" class="btn btn-dark" id="btnSelectItems">
+                    <i class="fas fa-check me-1"></i>Select
                 </button>
             </div>
         </div>

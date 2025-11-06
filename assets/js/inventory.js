@@ -295,8 +295,19 @@
      */
     function processStockMovement(items) {
         const type = $('#selectItemsModal').data('type');
+        const assignedTo = $('#assignedToPerson').val();
+        const assignmentNotes = $('#assignmentNotes').val();
+        
+        // Validate store selection
+        if (!selectedLocationId) {
+            showAlert('danger', 'Please select a store first');
+            return;
+        }
         
         // Process each item
+        let successCount = 0;
+        let failCount = 0;
+        
         items.forEach(function(item) {
             if (item.qty > 0) {
                 const data = {
@@ -304,6 +315,8 @@
                     qty: item.qty,
                     location_id: selectedLocationId,
                     ref_type: type,
+                    assigned_to: assignedTo || '',
+                    assignment_notes: assignmentNotes || '',
                     [CSRF_TOKEN_NAME]: $('input[name="' + CSRF_TOKEN_NAME + '"]').val()
                 };
                 
@@ -316,17 +329,33 @@
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
+                            successCount++;
                             showAlert('success', `${item.name}: ${response.message}`);
                         } else {
+                            failCount++;
                             showAlert('danger', `${item.name}: ${response.message}`);
                         }
+                    },
+                    error: function() {
+                        failCount++;
+                        showAlert('danger', `${item.name}: Failed to process`);
                     }
                 });
             }
         });
         
         $('#selectItemsModal').modal('hide');
-        setTimeout(() => location.reload(), 2000);
+        
+        // Show summary message
+        setTimeout(() => {
+            if (successCount > 0) {
+                showAlert('success', `Successfully processed ${successCount} item(s)`);
+            }
+            if (failCount > 0) {
+                showAlert('warning', `Failed to process ${failCount} item(s)`);
+            }
+            location.reload();
+        }, 2000);
     }
 
     /**

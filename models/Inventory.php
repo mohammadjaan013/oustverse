@@ -168,8 +168,10 @@ class Inventory {
         try {
             // Insert stock movement
             $sql = "INSERT INTO stock_movements 
-                    (item_id, location_from, location_to, qty, rate, type, ref_type, ref_id, notes, created_by) 
-                    VALUES (:item_id, :location_from, :location_to, :qty, :rate, :type, :ref_type, :ref_id, :notes, :created_by)";
+                    (item_id, location_from, location_to, qty, rate, type, ref_type, ref_id, notes, 
+                     assigned_to, assignment_notes, assignment_status, created_by) 
+                    VALUES (:item_id, :location_from, :location_to, :qty, :rate, :type, :ref_type, :ref_id, :notes, 
+                            :assigned_to, :assignment_notes, :assignment_status, :created_by)";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
@@ -182,6 +184,9 @@ class Inventory {
                 'ref_type' => $data['ref_type'] ?? null,
                 'ref_id' => $data['ref_id'] ?? null,
                 'notes' => $data['notes'] ?? null,
+                'assigned_to' => $data['assigned_to'] ?? null,
+                'assignment_notes' => $data['assignment_notes'] ?? null,
+                'assignment_status' => $data['assignment_status'] ?? 'completed',
                 'created_by' => $_SESSION['user_id']
             ]);
             

@@ -226,7 +226,10 @@ class InventoryController {
                 'type' => 'in',
                 'ref_type' => sanitize($_POST['ref_type'] ?? 'manual'),
                 'ref_id' => intval($_POST['ref_id'] ?? 0),
-                'notes' => sanitize($_POST['notes'] ?? '')
+                'notes' => sanitize($_POST['notes'] ?? ''),
+                'assigned_to' => !empty($_POST['assigned_to']) ? intval($_POST['assigned_to']) : null,
+                'assignment_notes' => sanitize($_POST['assignment_notes'] ?? ''),
+                'assignment_status' => !empty($_POST['assigned_to']) ? 'pending' : 'completed'
             ];
 
             if ($data['qty'] <= 0) {
@@ -237,7 +240,13 @@ class InventoryController {
 
             logAudit('stock_in', 'stock_movements', $movementId, null, $data);
 
-            jsonResponse(true, 'Stock received successfully', ['id' => $movementId]);
+            // Build success message
+            $message = 'Stock received successfully';
+            if ($data['assigned_to']) {
+                $message .= ' and assigned';
+            }
+
+            jsonResponse(true, $message, ['id' => $movementId]);
 
         } catch (Exception $e) {
             error_log($e->getMessage());
@@ -266,7 +275,10 @@ class InventoryController {
                 'type' => 'out',
                 'ref_type' => sanitize($_POST['ref_type'] ?? 'manual'),
                 'ref_id' => intval($_POST['ref_id'] ?? 0),
-                'notes' => sanitize($_POST['notes'] ?? '')
+                'notes' => sanitize($_POST['notes'] ?? ''),
+                'assigned_to' => !empty($_POST['assigned_to']) ? intval($_POST['assigned_to']) : null,
+                'assignment_notes' => sanitize($_POST['assignment_notes'] ?? ''),
+                'assignment_status' => !empty($_POST['assigned_to']) ? 'pending' : 'completed'
             ];
 
             if ($data['qty'] <= 0) {
