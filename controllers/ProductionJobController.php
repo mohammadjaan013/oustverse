@@ -6,24 +6,17 @@
 
 require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../models/ProductionJob.php';
-require_once __DIR__ . '/../models/Product.php';
-require_once __DIR__ . '/../models/Customer.php';
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-    exit;
-}
+// Require login
+requireLogin();
 
 // Get database connection
-$database = Database::getInstance();
-$db = $database->getConnection();
+$db = getDB();
 
 // Initialize models
 $productionJobModel = new ProductionJob($db);
-$productModel = new Product();
-$customerModel = new Customer($db);
 
 // Get action from request
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
@@ -55,14 +48,6 @@ switch ($action) {
     
     case 'getStatistics':
         getStatistics($productionJobModel);
-        break;
-    
-    case 'getProducts':
-        getProducts($productModel);
-        break;
-    
-    case 'getCustomers':
-        getCustomers($customerModel);
         break;
     
     case 'getJobItems':

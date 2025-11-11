@@ -4,30 +4,27 @@
  * Main page for managing production jobs and manufacturing
  */
 
-require_once 'includes/config.php';
-require_once 'includes/db.php';
-require_once 'includes/functions.php';
-require_once 'models/ProductionJob.php';
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/models/ProductionJob.php';
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
+// Require login
+requireLogin();
 
 // Page title
 $pageTitle = 'Production Jobs';
 
 // Get database connection
-$database = Database::getInstance();
-$db = $database->getConnection();
+$db = getDB();
 
 // Get statistics
 $productionJobModel = new ProductionJob($db);
 $stats = $productionJobModel->getStatistics();
 
 // Include header
-require_once 'includes/header.php';
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="content-wrapper">
@@ -326,6 +323,7 @@ require_once 'includes/header.php';
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<?php require_once 'includes/footer.php'; ?>
-
-<script src="<?php echo BASE_URL; ?>/assets/js/production_jobs.js"></script>
+<?php 
+$customJS = "<script src='" . BASE_URL . "/assets/js/production_jobs.js'></script>";
+require_once __DIR__ . '/includes/footer.php'; 
+?>

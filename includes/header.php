@@ -58,27 +58,31 @@
                     <div class="menu-section-title">Sales</div>
                     <ul class="menu-list">
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=CRM" class="<?php echo basename($_SERVER['PHP_SELF']) == 'crm.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/crm.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'crm.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-user-tie"></i>
                                 <span>CRM</span>
+                                <span class="badge bg-success text-white ms-2" style="font-size: 0.6rem;">Live</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Quotes" class="<?php echo basename($_SERVER['PHP_SELF']) == 'quotes.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/quotations.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'quotations.php' || basename($_SERVER['PHP_SELF']) == 'quotation_form.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-file-invoice"></i>
                                 <span>Quotes</span>
+                                <span class="badge bg-success text-white ms-2" style="font-size: 0.6rem;">Live</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Orders" class="<?php echo basename($_SERVER['PHP_SELF']) == 'orders.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/orders.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'orders.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-shopping-cart"></i>
                                 <span>Orders</span>
+                                <span class="badge bg-success text-white ms-2" style="font-size: 0.6rem;">Live</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo BASE_URL; ?>/under_development.php?module=Invoices" class="<?php echo basename($_SERVER['PHP_SELF']) == 'invoices.php' ? 'active' : ''; ?>">
+                            <a href="<?php echo BASE_URL; ?>/invoices.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'invoices.php' || basename($_SERVER['PHP_SELF']) == 'invoice_form.php' ? 'active' : ''; ?>">
                                 <i class="fas fa-file-invoice-dollar"></i>
                                 <span>Invoices</span>
+                                <span class="badge bg-success text-white ms-2" style="font-size: 0.6rem;">Live</span>
                             </a>
                         </li>
                         <li>
