@@ -98,6 +98,7 @@ class QuotationController {
             'customer_name' => sanitize($_POST['customer_name']),
             'contact_person' => sanitize($_POST['contact_person'] ?? ''),
             'address' => sanitize($_POST['address'] ?? ''),
+            'copy_from' => !empty($_POST['copy_from']) ? intval($_POST['copy_from']) : null,
             'branch_id' => !empty($_POST['branch_id']) ? intval($_POST['branch_id']) : null,
             'branch_name' => sanitize($_POST['branch_name'] ?? ''),
             'sales_credit' => sanitize($_POST['sales_credit'] ?? 'None'),
@@ -155,10 +156,17 @@ class QuotationController {
         }
         
         $data = [
+            'reference' => sanitize($_POST['reference'] ?? ''),
+            'customer_id' => !empty($_POST['customer_id']) ? intval($_POST['customer_id']) : null,
             'customer_name' => sanitize($_POST['customer_name']),
             'contact_person' => sanitize($_POST['contact_person'] ?? ''),
             'address' => sanitize($_POST['address'] ?? ''),
+            'copy_from' => !empty($_POST['copy_from']) ? intval($_POST['copy_from']) : null,
+            'branch_id' => !empty($_POST['branch_id']) ? intval($_POST['branch_id']) : null,
+            'branch_name' => sanitize($_POST['branch_name'] ?? ''),
+            'sales_credit' => sanitize($_POST['sales_credit'] ?? 'None'),
             'shipping_address' => sanitize($_POST['shipping_address'] ?? ''),
+            'same_as_billing' => isset($_POST['same_as_billing']) ? 1 : 0,
             'quotation_date' => $_POST['quotation_date'],
             'valid_till' => $_POST['valid_till'],
             'type' => sanitize($_POST['type'] ?? 'quotation'),
@@ -169,6 +177,13 @@ class QuotationController {
             'extra_charges' => floatval($_POST['extra_charges'] ?? 0),
             'total_amount' => floatval($_POST['total_amount'] ?? 0),
             'notes' => sanitize($_POST['notes'] ?? ''),
+            'terms_conditions' => $_POST['terms_conditions'] ?? null,
+            'bank_details' => sanitize($_POST['bank_details'] ?? ''),
+            'save_as_template' => isset($_POST['save_as_template']) ? 1 : 0,
+            'share_by_email' => isset($_POST['share_by_email']) ? 1 : 0,
+            'share_by_whatsapp' => isset($_POST['share_by_whatsapp']) ? 1 : 0,
+            'print_after_saving' => isset($_POST['print_after_saving']) ? 1 : 0,
+            'alert_on_opening' => isset($_POST['alert_on_opening']) ? 1 : 0,
             'items' => $_POST['items'] ?? [],
             'terms' => $_POST['terms'] ?? []
         ];

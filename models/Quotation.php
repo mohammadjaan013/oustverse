@@ -144,13 +144,13 @@ class Quotation {
             // Insert quotation
             $sql = "INSERT INTO quotations (
                         quote_no, reference, customer_id, customer_name, contact_person, 
-                        address, branch_id, branch_name, sales_credit, shipping_address, 
+                        address, copy_from, branch_id, branch_name, sales_credit, shipping_address, 
                         same_as_billing, quotation_date, valid_till, issued_by, issued_by_name,
                         executive_id, executive_name, type, status, subtotal, discount_amount,
                         tax_amount, extra_charges, total_amount, notes, terms_conditions,
                         bank_details, upload_file, save_as_template, share_by_email,
                         share_by_whatsapp, print_after_saving, alert_on_opening, created_by
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
@@ -160,6 +160,7 @@ class Quotation {
                 $data['customer_name'],
                 $data['contact_person'] ?? null,
                 $data['address'] ?? null,
+                $data['copy_from'] ?? null,
                 $data['branch_id'] ?? null,
                 $data['branch_name'] ?? null,
                 $data['sales_credit'] ?? 'None',
@@ -220,21 +221,30 @@ class Quotation {
             $this->db->beginTransaction();
             
             $sql = "UPDATE quotations SET
-                        reference = ?, customer_name = ?, contact_person = ?,
-                        address = ?, shipping_address = ?, quotation_date = ?,
-                        valid_till = ?, type = ?, status = ?, subtotal = ?,
-                        discount_amount = ?, tax_amount = ?, extra_charges = ?,
-                        total_amount = ?, notes = ?, terms_conditions = ?,
+                        reference = ?, customer_id = ?, customer_name = ?, contact_person = ?,
+                        address = ?, copy_from = ?, branch_id = ?, branch_name = ?, 
+                        sales_credit = ?, shipping_address = ?, same_as_billing = ?,
+                        quotation_date = ?, valid_till = ?, type = ?, status = ?, 
+                        subtotal = ?, discount_amount = ?, tax_amount = ?, extra_charges = ?,
+                        total_amount = ?, notes = ?, terms_conditions = ?, bank_details = ?,
+                        save_as_template = ?, share_by_email = ?, share_by_whatsapp = ?,
+                        print_after_saving = ?, alert_on_opening = ?,
                         updated_at = CURRENT_TIMESTAMP
                     WHERE id = ?";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
                 $data['reference'] ?? null,
+                $data['customer_id'] ?? null,
                 $data['customer_name'],
                 $data['contact_person'] ?? null,
                 $data['address'] ?? null,
+                $data['copy_from'] ?? null,
+                $data['branch_id'] ?? null,
+                $data['branch_name'] ?? null,
+                $data['sales_credit'] ?? 'None',
                 $data['shipping_address'] ?? null,
+                $data['same_as_billing'] ?? 1,
                 $data['quotation_date'],
                 $data['valid_till'],
                 $data['type'] ?? 'quotation',
@@ -246,6 +256,12 @@ class Quotation {
                 $data['total_amount'] ?? 0,
                 $data['notes'] ?? null,
                 $data['terms_conditions'] ?? null,
+                $data['bank_details'] ?? null,
+                $data['save_as_template'] ?? 0,
+                $data['share_by_email'] ?? 0,
+                $data['share_by_whatsapp'] ?? 0,
+                $data['print_after_saving'] ?? 0,
+                $data['alert_on_opening'] ?? 0,
                 $id
             ]);
             

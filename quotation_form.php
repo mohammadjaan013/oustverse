@@ -3,13 +3,38 @@
  * Create/Edit Quotation Form
  */
 
+// Start output buffering to prevent any accidental output
+ob_start();
+
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/models/Quotation.php';
+require_once __DIR__ . '/controllers/QuotationController.php';
 
 requireLogin();
+
+// Handle AJAX requests
+if (isset($_GET['action'])) {
+    // Clean any output that may have been buffered
+    ob_clean();
+    
+    $controller = new QuotationController();
+    
+    switch ($_GET['action']) {
+        case 'create':
+            $controller->create();
+            break;
+        case 'update':
+            $controller->update();
+            break;
+    }
+    exit;
+}
+
+// For regular page view, output the buffer
+ob_end_flush();
 
 $quotationModel = new Quotation();
 $quoteId = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -146,23 +171,23 @@ include __DIR__ . '/includes/header.php';
                         </button>
                         
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="itemsTable">
+                            <table class="table table-bordered" id="itemsTable" style="min-width: 1800px;">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="width: 40px;">No.</th>
-                                        <th style="width: 80px;">Image</th>
-                                        <th>Item & Description</th>
-                                        <th style="width: 100px;">HSN/SAC</th>
-                                        <th style="width: 80px;">Qty</th>
-                                        <th style="width: 80px;">Unit</th>
-                                        <th style="width: 100px;">Rate (₹)</th>
-                                        <th style="width: 80px;">Disc (%)</th>
-                                        <th style="width: 100px;">Taxable (₹)</th>
-                                        <th style="width: 80px;">CGST (%)</th>
-                                        <th style="width: 80px;">SGST (%)</th>
-                                        <th style="width: 120px;">Amt (₹)</th>
-                                        <th style="width: 100px;">Lead Time</th>
-                                        <th style="width: 50px;"></th>
+                                        <th style="width: 50px;">No.</th>
+                                        <th style="width: 100px;">Image</th>
+                                        <th style="min-width: 250px;">Item & Description</th>
+                                        <th style="width: 120px;">HSN/SAC</th>
+                                        <th style="width: 100px;">Qty</th>
+                                        <th style="width: 100px;">Unit</th>
+                                        <th style="width: 120px;">Rate (₹)</th>
+                                        <th style="width: 100px;">Disc (%)</th>
+                                        <th style="width: 130px;">Taxable (₹)</th>
+                                        <th style="width: 100px;">CGST (%)</th>
+                                        <th style="width: 100px;">SGST (%)</th>
+                                        <th style="width: 130px;">Amt (₹)</th>
+                                        <th style="width: 150px;">Lead Time</th>
+                                        <th style="width: 60px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="itemsTableBody">
@@ -376,6 +401,48 @@ include __DIR__ . '/includes/header.php';
         </div>
     </form>
 </div>
+
+<style>
+/* Better visibility for quotation form table */
+#itemsTable input.form-control-sm,
+#itemsTable select.form-select-sm,
+#itemsTable textarea.form-control-sm {
+    font-size: 0.875rem;
+    min-height: 32px;
+    padding: 0.375rem 0.5rem;
+}
+
+#itemsTable textarea.form-control-sm {
+    min-height: 60px;
+}
+
+#itemsTable .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+#itemsTable td {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+#itemsTable td textarea {
+    white-space: normal;
+}
+
+/* Make number inputs more visible */
+#itemsTable input[type="number"] {
+    text-align: right;
+    font-weight: 500;
+}
+
+/* Readonly fields styling */
+#itemsTable input[readonly] {
+    background-color: #e9ecef;
+    font-weight: 600;
+    color: #495057;
+}
+</style>
 
 <?php
 $customJS = "

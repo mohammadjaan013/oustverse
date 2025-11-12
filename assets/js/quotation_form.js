@@ -122,6 +122,9 @@ function addItemRow() {
             <td><input type="number" class="form-control form-control-sm item-amount" name="items[${itemRowCount - 1}][amount]" value="0" readonly></td>
             <td><input type="text" class="form-control form-control-sm" name="items[${itemRowCount - 1}][lead_time]"></td>
             <td><button type="button" class="btn btn-sm btn-danger btn-remove-item"><i class="fas fa-trash"></i></button></td>
+            <input type="hidden" name="items[${itemRowCount - 1}][discount_amount]" value="0">
+            <input type="hidden" name="items[${itemRowCount - 1}][cgst_amount]" value="0">
+            <input type="hidden" name="items[${itemRowCount - 1}][sgst_amount]" value="0">
         </tr>
     `;
     
@@ -195,24 +198,23 @@ function recalculateTotals() {
     
     $('#itemsTableBody tr').each(function() {
         const amount = parseFloat($(this).find('.item-amount').val()) || 0;
-        const taxableAmount = parseFloat($(this).find('.item-taxable').val()) || 0;
-        const cgstPercent = parseFloat($(this).find('.item-cgst').val()) || 0;
-        const sgstPercent = parseFloat($(this).find('.item-sgst').val()) || 0;
         const discountPercent = parseFloat($(this).find('.item-discount').val()) || 0;
         const qty = parseFloat($(this).find('.item-qty').val()) || 0;
         const rate = parseFloat($(this).find('.item-rate').val()) || 0;
         
-        const baseAmount = qty * rate;
-        const itemDiscount = (baseAmount * discountPercent) / 100;
-        const itemTax = (taxableAmount * (cgstPercent + sgstPercent)) / 100;
+        // Get hidden discount and tax amounts
+        const discountAmount = parseFloat($(this).find('input[name*="[discount_amount]"]').val()) || 0;
+        const cgstAmount = parseFloat($(this).find('input[name*="[cgst_amount]"]').val()) || 0;
+        const sgstAmount = parseFloat($(this).find('input[name*="[sgst_amount]"]').val()) || 0;
+        const itemTax = cgstAmount + sgstAmount;
         
-        subtotal += taxableAmount;
+        subtotal += amount; // Use final amount (after tax)
         totalTax += itemTax;
-        totalDiscount += itemDiscount;
+        totalDiscount += discountAmount;
     });
     
     const extraCharges = 0; // Placeholder for extra charges feature
-    const grandTotal = subtotal + totalTax + extraCharges;
+    const grandTotal = subtotal + extraCharges;
     
     // Update display
     $('#displayTotal').text(subtotal.toFixed(2));
@@ -260,6 +262,13 @@ function saveQuotation(enterAnother = false) {
     const action = quotationId > 0 ? 'update' : 'create';
     const url = `quotation_form.php?action=${action}`;
     
+    // Debug: Log what we're sending
+    console.log('Saving quotation with action:', action);
+    console.log('Form data entries:');
+    for (let pair of formData.entries()) {
+        console.log(pair[0], '=', pair[1]);
+    }
+    
     // Show loading
     $('#btnSave, #btnSaveQuotation, #btnSaveAndEnterAnother').prop('disabled', true)
         .html('<i class="fas fa-spinner fa-spin"></i> Saving...');
@@ -272,6 +281,7 @@ function saveQuotation(enterAnother = false) {
         contentType: false,
         dataType: 'json',
         success: function(response) {
+            console.log('Save response:', response);
             if (response.success) {
                 showNotification('Success', response.message, 'success');
                 
@@ -293,6 +303,7 @@ function saveQuotation(enterAnother = false) {
         },
         error: function(xhr, status, error) {
             console.error('Save Error:', error);
+            console.error('Response:', xhr.responseText);
             showNotification('Error', 'Failed to save quotation. Please try again.', 'error');
             resetSaveButtons();
         }

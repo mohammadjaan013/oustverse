@@ -116,7 +116,14 @@ function initializeDataTable() {
                 });
                 return d;
             },
-            dataSrc: 'data',
+            dataSrc: function(json) {
+                console.log('Received data:', json.data.length, 'records');
+                if (json.data.length > 0) {
+                    console.log('First record ID:', json.data[0].id);
+                    console.log('Last record ID:', json.data[json.data.length - 1].id);
+                }
+                return json.data;
+            },
             error: function(xhr, error, thrown) {
                 console.error('DataTable Error:', xhr.responseText);
                 console.error('Error:', error);
@@ -142,25 +149,27 @@ function initializeDataTable() {
             },
             { 
                 data: 'business',
-                orderable: true
+                orderable: false
             },
             { 
                 data: 'contact',
                 orderable: false
             },
-            { data: 'source' },
+            { data: 'source', orderable: false },
             { data: 'stage', orderable: false },
-            { data: 'since' },
-            { data: 'assigned_to' },
-            { data: 'last_talk' },
-            { data: 'next' },
+            { data: 'since', orderable: false },
+            { data: 'assigned_to', orderable: false },
+            { data: 'last_talk', orderable: false },
+            { data: 'next', orderable: false },
             { data: 'requirements', orderable: false },
             { data: 'notes', orderable: false },
             { data: 'actions', orderable: false }
         ],
-        order: [[6, 'desc']], // Default order by since (created date)
+        order: [], // Disable default ordering - use server-side order instead
         pageLength: 25,
         lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+        searching: false, // Disable DataTables search since we handle it separately
+        ordering: false, // Disable column sorting since we use custom sort buttons
         language: {
             processing: '<i class="fas fa-spinner fa-spin"></i> Loading...',
             emptyTable: 'No leads found',
