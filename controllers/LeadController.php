@@ -23,12 +23,23 @@ class LeadController {
     public function getLeadsJson() {
         requireLogin();
         
+        // Accept both GET and POST
+        $request = array_merge($_GET, $_POST);
+        
+        // Handle sorting
+        $sort = $request['sort'] ?? 'newest';
+        $orderBy = 'created_at';
+        $orderDir = ($sort === 'oldest') ? 'ASC' : 'DESC';
+        
         $filters = [
-            'stage' => $_GET['stage'] ?? '',
-            'status' => $_GET['status'] ?? '',
-            'assigned_to' => $_GET['assigned_to'] ?? '',
-            'source' => $_GET['source'] ?? '',
-            'search' => $_GET['search']['value'] ?? ''
+            'stage' => $request['stage'] ?? '',
+            'status' => $request['status'] ?? '',
+            'assigned_to' => $request['assigned_to'] ?? '',
+            'source' => $request['source'] ?? '',
+            'search' => $request['search']['value'] ?? ($request['search'] ?? ''),
+            'starred_only' => !empty($request['starred_only']) ? true : false,
+            'order_by' => $orderBy,
+            'order_dir' => $orderDir
         ];
         
         $leads = $this->model->getAll($filters);
@@ -40,7 +51,7 @@ class LeadController {
                 'business' => '<strong>' . htmlspecialchars($lead['business_name']) . '</strong>',
                 'contact' => htmlspecialchars($lead['contact_name'] ?? '-') . 
                             ($lead['mobile'] ? '<br><small class="text-muted">' . htmlspecialchars($lead['mobile']) . '</small>' : ''),
-                'source' => $lead['source'] ?? '-',
+                'source' => htmlspecialchars($lead['source'] ?? '-'),
                 'stage' => $this->getStageBadge($lead['stage']),
                 'since' => date('d-M', strtotime($lead['created_at'])),
                 'assigned_to' => htmlspecialchars($lead['assigned_to_name'] ?? '-'),
@@ -53,12 +64,14 @@ class LeadController {
             ];
         }
         
+        // Return simple JSON for client-side DataTables
+        header('Content-Type: application/json');
         echo json_encode([
-            'draw' => intval($_GET['draw'] ?? 1),
+            'data' => $data,
             'recordsTotal' => count($data),
-            'recordsFiltered' => count($data),
-            'data' => $data
+            'recordsFiltered' => count($data)
         ]);
+        exit;
     }
     
     /**
@@ -77,21 +90,35 @@ class LeadController {
         
         $data = [
             'business_name' => sanitize($_POST['business_name']),
+            'title' => sanitize($_POST['title'] ?? 'Mr'),
+            'first_name' => sanitize($_POST['first_name'] ?? ''),
             'contact_name' => sanitize($_POST['contact_name'] ?? ''),
+            'designation' => sanitize($_POST['designation'] ?? ''),
             'email' => sanitize($_POST['email'] ?? ''),
             'phone' => sanitize($_POST['phone'] ?? ''),
             'mobile' => sanitize($_POST['mobile'] ?? ''),
             'whatsapp' => sanitize($_POST['whatsapp'] ?? ''),
+            'website' => sanitize($_POST['website'] ?? ''),
             'source' => sanitize($_POST['source'] ?? ''),
             'stage' => sanitize($_POST['stage'] ?? 'raw'),
-            'status' => sanitize($_POST['status'] ?? 'unqualified'),
+            'status' => sanitize($_POST['status'] ?? 'active'),
             'assigned_to' => !empty($_POST['assigned_to']) ? intval($_POST['assigned_to']) : null,
             'requirements' => sanitize($_POST['requirements'] ?? ''),
             'notes' => sanitize($_POST['notes'] ?? ''),
+            'address_line1' => sanitize($_POST['address_line1'] ?? ''),
+            'address_line2' => sanitize($_POST['address_line2'] ?? ''),
             'address' => sanitize($_POST['address'] ?? ''),
             'city' => sanitize($_POST['city'] ?? ''),
             'state' => sanitize($_POST['state'] ?? ''),
             'pincode' => sanitize($_POST['pincode'] ?? ''),
+            'country' => sanitize($_POST['country'] ?? 'India'),
+            'gstin' => sanitize($_POST['gstin'] ?? ''),
+            'code' => sanitize($_POST['code'] ?? ''),
+            'category' => sanitize($_POST['category'] ?? ''),
+            'product' => sanitize($_POST['product'] ?? ''),
+            'potential' => !empty($_POST['potential']) ? floatval($_POST['potential']) : 0.00,
+            'since_date' => !empty($_POST['since_date']) ? $_POST['since_date'] : null,
+            'tags' => sanitize($_POST['tags'] ?? ''),
             'priority' => sanitize($_POST['priority'] ?? 'medium')
         ];
         
@@ -127,25 +154,38 @@ class LeadController {
         
         $data = [
             'business_name' => sanitize($_POST['business_name']),
+            'title' => sanitize($_POST['title'] ?? 'Mr'),
+            'first_name' => sanitize($_POST['first_name'] ?? ''),
             'contact_name' => sanitize($_POST['contact_name'] ?? ''),
+            'designation' => sanitize($_POST['designation'] ?? ''),
             'email' => sanitize($_POST['email'] ?? ''),
             'phone' => sanitize($_POST['phone'] ?? ''),
             'mobile' => sanitize($_POST['mobile'] ?? ''),
             'whatsapp' => sanitize($_POST['whatsapp'] ?? ''),
+            'website' => sanitize($_POST['website'] ?? ''),
             'source' => sanitize($_POST['source'] ?? ''),
             'stage' => sanitize($_POST['stage'] ?? 'raw'),
-            'status' => sanitize($_POST['status'] ?? 'unqualified'),
+            'status' => sanitize($_POST['status'] ?? 'active'),
             'assigned_to' => !empty($_POST['assigned_to']) ? intval($_POST['assigned_to']) : null,
             'requirements' => sanitize($_POST['requirements'] ?? ''),
             'notes' => sanitize($_POST['notes'] ?? ''),
+            'address_line1' => sanitize($_POST['address_line1'] ?? ''),
+            'address_line2' => sanitize($_POST['address_line2'] ?? ''),
             'address' => sanitize($_POST['address'] ?? ''),
             'city' => sanitize($_POST['city'] ?? ''),
             'state' => sanitize($_POST['state'] ?? ''),
             'pincode' => sanitize($_POST['pincode'] ?? ''),
+            'country' => sanitize($_POST['country'] ?? 'India'),
+            'gstin' => sanitize($_POST['gstin'] ?? ''),
+            'code' => sanitize($_POST['code'] ?? ''),
+            'category' => sanitize($_POST['category'] ?? ''),
+            'product' => sanitize($_POST['product'] ?? ''),
+            'potential' => !empty($_POST['potential']) ? floatval($_POST['potential']) : 0.00,
+            'since_date' => !empty($_POST['since_date']) ? $_POST['since_date'] : null,
+            'tags' => sanitize($_POST['tags'] ?? ''),
             'priority' => sanitize($_POST['priority'] ?? 'medium'),
-            'last_talk_date' => $_POST['last_talk_date'] ?? null,
-            'next_action_date' => $_POST['next_action_date'] ?? null,
-            'next_action_notes' => sanitize($_POST['next_action_notes'] ?? '')
+            'last_activity_date' => $_POST['last_activity_date'] ?? null,
+            'next_followup_date' => $_POST['next_followup_date'] ?? null
         ];
         
         if ($this->model->update($id, $data)) {
@@ -203,14 +243,15 @@ class LeadController {
     public function getLead() {
         requireLogin();
         
-        $id = intval($_GET['id'] ?? 0);
+        $id = intval($_GET['id'] ?? $_POST['id'] ?? 0);
         if (!$id) {
             jsonResponse(false, 'Invalid lead ID');
+            return;
         }
         
         $lead = $this->model->getById($id);
         if ($lead) {
-            jsonResponse(true, 'Lead retrieved', $lead);
+            jsonResponse(true, 'Lead retrieved successfully', $lead);
         } else {
             jsonResponse(false, 'Lead not found');
         }

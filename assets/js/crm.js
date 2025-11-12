@@ -25,6 +25,9 @@ $(document).ready(function() {
         $('#sortTabs button').removeClass('active');
         $(this).addClass('active');
         currentSort = $(this).attr('id') === 'btnNewest' ? 'newest' : 'oldest';
+        console.log('Sort changed to:', currentSort);
+        // Remove star filter when sorting
+        delete currentFilters.starred_only;
         leadsTable.ajax.reload();
     });
 
@@ -33,12 +36,8 @@ $(document).ready(function() {
         $('#sortTabs button').removeClass('active');
         $(this).addClass('active');
         currentFilters.starred_only = true;
+        console.log('Star filter enabled:', currentFilters);
         leadsTable.ajax.reload();
-    });
-
-    // Remove star filter when other sorts clicked
-    $('#btnNewest, #btnOldest').on('click', function() {
-        delete currentFilters.starred_only;
     });
 
     // Global Search
@@ -75,13 +74,19 @@ $(document).ready(function() {
     });
 
     // Kanban view (placeholder)
-    $('#btnKanban').on('click', function() {
+    $('#btnKanban').on('click', function(e) {
+        e.preventDefault();
         showNotification('Coming Soon', 'Kanban view will be available soon!', 'info');
+        // Don't change active state for placeholders
+        return false;
     });
 
     // Appointments view (placeholder)
-    $('#btnAppointments').on('click', function() {
+    $('#btnAppointments').on('click', function(e) {
+        e.preventDefault();
         showNotification('Coming Soon', 'Appointments view will be available soon!', 'info');
+        // Don't change active state for placeholders
+        return false;
     });
 
     // Filters (placeholder)
@@ -96,19 +101,27 @@ $(document).ready(function() {
 function initializeDataTable() {
     leadsTable = $('#leadsTable').DataTable({
         processing: true,
-        serverSide: true,
+        serverSide: false, // Changed to client-side processing for better debugging
         ajax: {
             url: 'crm.php?action=list_json',
-            type: 'POST',
+            type: 'GET',
             data: function(d) {
                 d.stage = currentStage;
                 d.sort = currentSort;
-                d.filters = currentFilters;
-                d[window.CSRF_TOKEN_NAME] = $('input[name="' + window.CSRF_TOKEN_NAME + '"]').val();
+                d.starred_only = currentFilters.starred_only || '';
+                console.log('AJAX Request Data:', {
+                    stage: d.stage,
+                    sort: d.sort,
+                    starred_only: d.starred_only
+                });
+                return d;
             },
+            dataSrc: 'data',
             error: function(xhr, error, thrown) {
-                console.error('DataTable Error:', error, thrown);
-                showNotification('Error', 'Failed to load leads data', 'error');
+                console.error('DataTable Error:', xhr.responseText);
+                console.error('Error:', error);
+                console.error('Thrown:', thrown);
+                showNotification('Error', 'Failed to load leads data. Check console for details.', 'error');
             }
         },
         columns: [
@@ -156,7 +169,8 @@ function initializeDataTable() {
         drawCallback: function(settings) {
             // Update count badge
             const info = this.api().page.info();
-            $('#leadCount').text(info.recordsDisplay);
+            const totalRecords = info.recordsTotal || 0;
+            $('#leadCount').text(totalRecords);
 
             // Bind star toggle
             $('.star-toggle').off('click').on('click', function() {

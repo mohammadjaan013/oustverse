@@ -3,6 +3,9 @@
  * CRM - Leads & Prospects Page
  */
 
+// Start output buffering to prevent any accidental output
+ob_start();
+
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/auth.php';
@@ -13,6 +16,9 @@ requireLogin();
 
 // Handle AJAX requests
 if (isset($_GET['action'])) {
+    // Clean any output that may have been buffered
+    ob_clean();
+    
     $controller = new LeadController();
     
     switch ($_GET['action']) {
@@ -37,6 +43,9 @@ if (isset($_GET['action'])) {
     }
     exit;
 }
+
+// For regular page view, output the buffer
+ob_end_flush();
 
 $pageTitle = 'Leads & Prospects';
 include __DIR__ . '/includes/header.php';

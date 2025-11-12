@@ -52,7 +52,7 @@ class Lead {
             }
             
             // Filter starred only
-            if (isset($filters['starred']) && $filters['starred']) {
+            if (!empty($filters['starred']) || !empty($filters['starred_only'])) {
                 $sql .= " AND l.is_starred = 1";
             }
             
@@ -121,36 +121,47 @@ class Lead {
     public function create($data) {
         try {
             $sql = "INSERT INTO leads (
-                        business_name, contact_name, email, phone, mobile, whatsapp,
+                        business_name, title, first_name, contact_name, designation,
+                        email, phone, mobile, whatsapp, website,
                         source, stage, status, assigned_to, requirements, notes,
-                        address, city, state, pincode, country, priority,
-                        last_talk_date, next_action_date, next_action_notes,
+                        address_line1, address_line2, address, city, state, pincode, country, gstin,
+                        code, category, product, potential, since_date, tags, priority,
                         created_by
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
                 $data['business_name'],
+                $data['title'] ?? 'Mr',
+                $data['first_name'] ?? null,
                 $data['contact_name'] ?? null,
+                $data['designation'] ?? null,
                 $data['email'] ?? null,
                 $data['phone'] ?? null,
                 $data['mobile'] ?? null,
                 $data['whatsapp'] ?? null,
+                $data['website'] ?? null,
                 $data['source'] ?? null,
                 $data['stage'] ?? 'raw',
-                $data['status'] ?? 'unqualified',
+                $data['status'] ?? 'active',
                 $data['assigned_to'] ?? null,
                 $data['requirements'] ?? null,
                 $data['notes'] ?? null,
+                $data['address_line1'] ?? null,
+                $data['address_line2'] ?? null,
                 $data['address'] ?? null,
                 $data['city'] ?? null,
                 $data['state'] ?? null,
                 $data['pincode'] ?? null,
                 $data['country'] ?? 'India',
+                $data['gstin'] ?? null,
+                $data['code'] ?? null,
+                $data['category'] ?? null,
+                $data['product'] ?? null,
+                $data['potential'] ?? 0.00,
+                $data['since_date'] ?? null,
+                $data['tags'] ?? null,
                 $data['priority'] ?? 'medium',
-                $data['last_talk_date'] ?? null,
-                $data['next_action_date'] ?? null,
-                $data['next_action_notes'] ?? null,
                 $_SESSION['user_id']
             ]);
             
@@ -167,37 +178,50 @@ class Lead {
     public function update($id, $data) {
         try {
             $sql = "UPDATE leads SET
-                        business_name = ?, contact_name = ?, email = ?, phone = ?,
-                        mobile = ?, whatsapp = ?, source = ?, stage = ?, status = ?,
-                        assigned_to = ?, requirements = ?, notes = ?,
-                        address = ?, city = ?, state = ?, pincode = ?, country = ?,
-                        priority = ?, last_talk_date = ?, next_action_date = ?,
-                        next_action_notes = ?
+                        business_name = ?, title = ?, first_name = ?, contact_name = ?, designation = ?,
+                        email = ?, phone = ?, mobile = ?, whatsapp = ?, website = ?,
+                        source = ?, stage = ?, status = ?, assigned_to = ?, requirements = ?, notes = ?,
+                        address_line1 = ?, address_line2 = ?, address = ?, city = ?, state = ?, pincode = ?, 
+                        country = ?, gstin = ?, code = ?, category = ?, product = ?, potential = ?, 
+                        since_date = ?, tags = ?, priority = ?,
+                        last_activity_date = ?, next_followup_date = ?
                     WHERE id = ?";
             
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 $data['business_name'],
+                $data['title'] ?? 'Mr',
+                $data['first_name'] ?? null,
                 $data['contact_name'] ?? null,
+                $data['designation'] ?? null,
                 $data['email'] ?? null,
                 $data['phone'] ?? null,
                 $data['mobile'] ?? null,
                 $data['whatsapp'] ?? null,
+                $data['website'] ?? null,
                 $data['source'] ?? null,
                 $data['stage'] ?? 'raw',
-                $data['status'] ?? 'unqualified',
+                $data['status'] ?? 'active',
                 $data['assigned_to'] ?? null,
                 $data['requirements'] ?? null,
                 $data['notes'] ?? null,
+                $data['address_line1'] ?? null,
+                $data['address_line2'] ?? null,
                 $data['address'] ?? null,
                 $data['city'] ?? null,
                 $data['state'] ?? null,
                 $data['pincode'] ?? null,
                 $data['country'] ?? 'India',
+                $data['gstin'] ?? null,
+                $data['code'] ?? null,
+                $data['category'] ?? null,
+                $data['product'] ?? null,
+                $data['potential'] ?? 0.00,
+                $data['since_date'] ?? null,
+                $data['tags'] ?? null,
                 $data['priority'] ?? 'medium',
-                $data['last_talk_date'] ?? null,
-                $data['next_action_date'] ?? null,
-                $data['next_action_notes'] ?? null,
+                $data['last_activity_date'] ?? null,
+                $data['next_followup_date'] ?? null,
                 $id
             ]);
         } catch (PDOException $e) {
